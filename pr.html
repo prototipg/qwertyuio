@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список пользователей</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .user-card {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            width: 250px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Users List</h1>
+    <div id="user-list" class="container"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userList = document.getElementById("user-list");
+
+            fetch("https://jsonplaceholder.typicode.com/users")
+                .then(response => response.json())
+                .then(users => {
+                    users.forEach(user => {
+                        const userCard = document.createElement("div");
+                        userCard.classList.add("user-card");
+
+                        const name = document.createElement("h2");
+                        name.textContent = user.name;
+
+                        const username = document.createElement("p");
+                        username.textContent = `@${user.username}`;
+
+                        const email = document.createElement("p");
+                        const emailLink = document.createElement("a");
+                        emailLink.href = `mailto:${user.email}`;
+                        emailLink.textContent = user.email;
+                        email.appendChild(document.createTextNode("Email: "));
+                        email.appendChild(emailLink);
+
+                        const phone = document.createElement("p");
+                        const phoneLink = document.createElement("a");
+                        phoneLink.href = ` tel:${user.phone}`;
+                        phoneLink.textContent = user.phone;
+                        phone.appendChild(document.createTextNode("Phone: "));
+                        phone.appendChild(phoneLink);
+
+                        const website = document.createElement("p");
+                        const websiteLink = document.createElement("a");
+                        websiteLink.href = `http://${user.website}`;
+                        websiteLink.textContent = user.website;
+                        websiteLink.target = "_blank";
+                        website.appendChild(document.createTextNode("Website: "));
+                        website.appendChild(websiteLink);
+
+                        const company = document.createElement("p");
+                        company.textContent = ` Company: ${user.company.name}`;
+
+                        userCard.appendChild(name);
+                        userCard.appendChild(username);
+                        userCard.appendChild(email);
+                        userCard.appendChild(phone);
+                        userCard.appendChild(website);
+                        userCard.appendChild(company);
+
+                        userList.appendChild(userCard);
+                    });
+                })
+        });
+    </script>
+</body>
+
+</html>
